@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+E4_object_detection/images/
+E4_object_detection/labels/
+E4_object_detection/visualized/
