@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+E4_object_detection/raw_videos/
+E4_object_detection/extracted_frames/
+E4_object_detection/sampled_frames/
+E4_object_detection/seed_labels/
