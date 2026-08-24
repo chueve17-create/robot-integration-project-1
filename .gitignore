@@ -219,3 +219,12 @@ __marimo__/
 E4_object_detection/images/
 E4_object_detection/labels/
 E4_object_detection/visualized/
+E4_object_detection/raw_videos/
+E4_object_detection/extracted_frames/
+E4_object_detection/sampled_frames/
+E4_object_detection/seed_labels/
+E4_object_detection/DataSet/
+E4_object_detection/seed_dataset/
+E4_object_detection/pre_labels/
+E4_object_detection/pre_labels_preview/
+*:Zone.Identifier
