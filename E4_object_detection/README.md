@@ -52,10 +52,37 @@ The final reviewed dataset lives in `DataSet/` with 364 train / 104 val / 52 tes
 - [x] Assist model training
 - [x] Auto pre-labeling
 - [x] Manual review (Roboflow)
-- [ ] Full training (in progress)
-- [ ] Model evaluation (mAP, precision/recall on held-out test set)
+- [x] Full training (100 epochs)
+- [x] Model evaluation (mAP, precision/recall on held-out test set)
 - [ ] Jetson deployment
 - [ ] ROS2 integration
+
+## Training results
+
+Model: **YOLOv8n**, 100 epochs, trained on RTX 4060 Laptop GPU (8GB VRAM).
+
+### Validation set (during training)
+| Class | mAP50 |
+|---|---|
+| comb | 0.983 |
+| mouse | 0.928 |
+| **all** | **0.955** |
+
+### Test set (held-out, final evaluation)
+| Class | Images | Instances | Precision | Recall | mAP50 | mAP50-95 |
+|---|---|---|---|---|---|---|
+| comb | 30 | 30 | 0.995 | 1.000 | 0.995 | 0.855 |
+| mouse | 33 | 36 | 0.970 | 0.913 | 0.988 | 0.897 |
+| **all** | 50 | 66 | 0.983 | 0.956 | **0.992** | 0.876 |
+
+Inference speed: ~8.1ms/image (GPU, batch size 1).
+
+Evaluation artifacts (confusion matrix, PR curves, prediction visualizations, `predictions.json`) are saved under `runs/detect/E4_object_detection/results/test_eval/` at the project root.
+
+## Known limitations
+
+- Two images (`neg-v2_0057`, `together-v2_0016`) were automatically excluded from test evaluation due to a labeling format issue (mixed segment/detection annotation rows in the label file).
+- Occasional low-confidence false positives observed on visually similar unseen objects — e.g., a keyboard misclassified as "mouse" at ~0.3 confidence in one test prediction. This is well below typical deployment confidence thresholds (0.5+) and did not affect overall test metrics. Recommend using `conf>=0.5` at inference time in deployment.
 
 ## Directory structure
 ```
@@ -67,7 +94,8 @@ E4_object_detection/
 ├── seed_dataset/         Merged seed dataset used to train the assist model (not tracked in git)
 ├── pre_labels/           Auto-generated candidate labels from the assist model (not tracked in git)
 ├── pre_labels_preview/   Preview images with predicted boxes drawn, for quick review (not tracked in git)
-├── DataSet/              Final reviewed dataset: train/valid/test, ready for training (not tracked in git)
+├── DataSet/              Final reviewed dataset: train/valid/test, ready for training
+│   └── runs/detect/runs/final_model/   Full 100-epoch training run (weights, metrics)
 ├── labelmap.txt          Class index-to-name mapping used for Roboflow re-import during review
 ├── scripts/
 │   ├── extract_frames.sh     Batch video frame extraction script
@@ -76,3 +104,10 @@ E4_object_detection/
 │   └── auto_prelabel.py      Runs the assist model on all images to generate candidate labels
 └── data.yaml              YOLO training config file (in DataSet/)
 ```
+
+## Next phase: Jetson deployment
+
+The next major phase is deploying the trained model to Jetson Orin Nano/NX with ROS2 Humble integration, including:
+- Real-time inference on 5 FPS video input
+- On-screen FPS counter (top-right corner)
+- ROS2 topic publishing (`vision_msgs/Detection2DArray`)
