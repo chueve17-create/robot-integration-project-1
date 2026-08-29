@@ -10,6 +10,7 @@ from vision_msgs.msg import Detection2DArray
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import cv2
+import time
 from fps_overlay import FPSCounter, draw_fps
 from result_publisher import build_detection_array
 
@@ -22,6 +23,9 @@ MODEL_PATH = "best.pt"
 IMAGE_TOPIC = "/camera/image_raw"
 # 置信度阈值：过滤低置信度误检(参考E4测试阶段发现的键盘误检问题)
 CONF_THRESHOLD = 0.5
+# 目标处理帧率：不管摄像头驱动实际发布多快，节点内部主动限速，稳定在这个值附近
+TARGET_FPS = 5
+MIN_FRAME_INTERVAL = 1.0 / TARGET_FPS
 
 
 class DetectionNode(Node):
@@ -38,6 +42,9 @@ class DetectionNode(Node):
 
         # FPS计数器，window_size=10表示用最近10帧算平均帧率，避免数字跳动
         self.fps_counter = FPSCounter(window_size=10)
+
+        # 记录上一次实际处理(推理)的时间戳，用于主动限速判断
+        self.last_process_time = 0.0
 
         # 订阅相机图像话题，每收到一帧就触发 image_callback
         self.subscription = self.create_subscription(
@@ -58,11 +65,18 @@ class DetectionNode(Node):
     def image_callback(self, msg: Image):
         """
         每收到一帧图像执行一次：
+        0. 主动限速：距上次处理不足1/TARGET_FPS秒，直接丢弃这一帧
         1. ROS Image消息 -> OpenCV图像
         2. YOLO推理
         3. FPS计算与右上角叠加
         4. 发布检测结果(Detection2DArray)
         """
+        # 主动限速：不管摄像头驱动实际发布多快(比如30fps)，这里强制把真正做推理的频率卡在 TARGET_FPS 左右，多余的帧直接丢弃不处理
+        now = time.time()
+        if now - self.last_process_time < MIN_FRAME_INTERVAL:
+            return
+        self.last_process_time = now
+
         try:
             # ROS图像消息通常是bgr8编码，转成OpenCV常用的BGR格式
             frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')

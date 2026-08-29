@@ -45,7 +45,7 @@ class VideoInput:
 if __name__ == "__main__":
     # 独立测试用：确认帧率控制是否生效
     # source=0 表示摄像头；也可以传入视频文件路径测试，如 "test_video.mp4"
-    video = VideoInput(source=0, target_fps=5)
+    video = VideoInput(source="../raw_videos/together/together-v1.mp4", target_fps=5)
 
     frame_count = 0
     start_time = time.time()
