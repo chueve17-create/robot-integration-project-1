@@ -228,3 +228,11 @@ E4_object_detection/seed_dataset/
 E4_object_detection/pre_labels/
 E4_object_detection/pre_labels_preview/
 *:Zone.Identifier
+
+# Incremental training artifacts
+E4_object_detection/DataSet_new/
+E4_object_detection/runs/
+E4_object_detection/roboflow_*/
+E4_object_detection/*.zip
+E4_object_detection/*.pt
+E4_object_detection/scripts/*.bak

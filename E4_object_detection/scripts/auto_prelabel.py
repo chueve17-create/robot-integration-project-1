@@ -14,12 +14,12 @@ from ultralytics import YOLO
 
 # ====== 配置区（按需修改）======
 BASE_DIR = Path.home() / "robot-integration-project-1" / "E4_object_detection"
-MODEL_PATH = BASE_DIR / "seed_dataset" / "runs" / "detect" / "runs" / "seed_assist_model" / "weights" / "best.pt"
+MODEL_PATH = BASE_DIR / "DataSet" / "runs" / "detect" / "runs" / "final_model" / "weights" / "best.pt"
 SAMPLED_FRAMES_DIR = BASE_DIR / "sampled_frames"
 OUTPUT_LABELS_DIR = BASE_DIR / "pre_labels"          # 存放预测的YOLO格式txt标注
 OUTPUT_PREVIEW_DIR = BASE_DIR / "pre_labels_preview" # 存放画好框的预览图，方便肉眼快速检查
 
-CATEGORIES = ["comb", "mouse", "together", "negative"]
+CATEGORIES = ["comb", "mouse"]
 CONF_THRESHOLD = 0.2  # 置信度阈值，种子模型数据少，适当调低避免漏检太多
 # ================================
 
@@ -51,7 +51,7 @@ def main():
         label_out_dir.mkdir(parents=True, exist_ok=True)
         preview_out_dir.mkdir(parents=True, exist_ok=True)
 
-        image_files = sorted(list(input_dir.glob("*.jpg")) + list(input_dir.glob("*.jpeg")) + list(input_dir.glob("*.png")))
+        image_files = sorted(list(input_dir.glob("new_*.jpg")) + list(input_dir.glob("new_*.jpeg")) + list(input_dir.glob("new_*.png")))
 
         if not image_files:
             print(f"{category}: 没有找到图片，跳过")
