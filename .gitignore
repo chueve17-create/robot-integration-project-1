@@ -236,3 +236,10 @@ E4_object_detection/roboflow_*/
 E4_object_detection/*.zip
 E4_object_detection/*.pt
 E4_object_detection/scripts/*.bak
+
+# Final expanded dataset and v3 preprocessing artifacts
+E4_object_detection/DataSet_v2/
+E4_object_detection/training_results/
+E4_object_detection/sampled_v3_frames/
+E4_object_detection/pre_labels_v3/
+E4_object_detection/pre_labels_preview_v3/

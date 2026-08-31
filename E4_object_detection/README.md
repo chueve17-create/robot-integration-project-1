@@ -47,7 +47,7 @@ Annotation used a semi-automated workflow:
 3. All candidate boxes were reviewed in Roboflow.
 4. Incorrect boxes were removed and missed objects were added manually.
 
-### Dataset v2 and hard-negative mining
+### Expanded dataset and hard-negative mining
 
 During the first Jetson camera test, the initial model occasionally classified keyboard corners and dark regions as `mouse`. To address this, additional deployment-domain footage was collected with the same camera setup:
 
@@ -59,45 +59,53 @@ The new frames were pre-labeled by the initial model and manually corrected in R
 
 | Split | Images |
 |---|---:|
-| Train | 554 |
+| Train | 707 |
 | Validation | 104 |
 | Test | 52 |
-| **Total** | **710** |
+| **Total** | **863** |
 
-Dataset v2 metadata and Roboflow attribution are stored in `config/dataset_v2/`. Training images and labels are excluded from Git because of their size.
+The final training split contains 148 empty-label images for hard-negative learning. Mixed polygon and bounding-box annotations exported from Roboflow were normalized to standard five-column YOLO detection labels before final training. Dataset images and labels are excluded from Git because of their size.
 
 ## Training
 
-The improved model was fine-tuned from the initial `best.pt` checkpoint rather than trained from scratch.
+The final detector was trained from the pretrained Ultralytics YOLOv8n checkpoint after all annotations were normalized to detection-box format.
 
 ```bash
 yolo detect train \
-  model=DataSet/runs/detect/runs/final_model/weights/best.pt \
-  data=DataSet_new/data_local.yaml \
-  epochs=50 \
+  data=DataSet_v2/data.yaml \
+  model=yolov8n.pt \
+  epochs=100 \
   imgsz=640 \
-  batch=8 \
-  device=0 \
-  workers=4 \
-  patience=15 \
-  project=DataSet_new/runs/detect \
-  name=final_model_v2
+  batch=16 \
+  project=training_results \
+  name=dataset_v3_fixed \
+  amp=False
 ```
 
 Training hardware: NVIDIA GeForce RTX 4060 Laptop GPU with 8 GB VRAM.
 
-### Dataset v2 validation results
+### Final validation results
 
 | Class | Images | Instances | Precision | Recall | mAP50 | mAP50-95 |
 |---|---:|---:|---:|---:|---:|---:|
-| `comb` | 61 | 63 | 1.000 | 0.969 | 0.992 | 0.845 |
-| `mouse` | 79 | 84 | 0.989 | 0.905 | 0.973 | 0.842 |
-| **all** | 100 | 147 | **0.995** | **0.937** | **0.982** | **0.844** |
+| `comb` | 65 | 67 | 0.998 | 0.985 | 0.985 | 0.848 |
+| `mouse` | 82 | 89 | 0.920 | 0.899 | 0.971 | 0.825 |
+| **all** | **104** | **156** | **0.959** | **0.942** | **0.978** | **0.837** |
 
-The final Jetson-tested checkpoint is stored at:
+### Final test-set results
+
+The selected checkpoint was evaluated on all 52 test images after annotation-format correction.
+
+| Class | Images | Instances | Precision | Recall | mAP50 | mAP50-95 |
+|---|---:|---:|---:|---:|---:|---:|
+| `comb` | 32 | 32 | 1.000 | 0.997 | 0.995 | 0.860 |
+| `mouse` | 36 | 41 | 0.901 | 0.951 | 0.965 | 0.853 |
+| **all** | **52** | **73** | **0.951** | **0.974** | **0.980** | **0.856** |
+
+The final checkpoint is stored at:
 
 ```text
-models/best_v2.pt
+models/best_v3.pt
 ```
 
 ## Jetson and ROS 2 deployment
@@ -138,7 +146,7 @@ and publishes detection results as `vision_msgs/Detection2DArray` messages on:
 Place the final weight next to the deployment script using the filename expected by the code:
 
 ```bash
-cp models/best_v2.pt jetson_deploy/best.pt
+cp models/best_v3.pt jetson_deploy/best.pt
 cd jetson_deploy
 ```
 
@@ -188,7 +196,8 @@ E4_object_detection/
 │   └── dataset_v2/          Dataset v2 metadata and Roboflow attribution
 ├── jetson_deploy/           ROS 2 deployment code
 ├── models/
-│   └── best_v2.pt           Final Jetson-tested checkpoint
+│   ├── best_v2.pt           Previous Jetson-tested checkpoint
+│   └── best_v3.pt           Final expanded-dataset checkpoint
 ├── scripts/
 │   ├── extract_frames.sh
 │   ├── sample_frames.sh
@@ -200,12 +209,13 @@ E4_object_detection/
 ├── sampled_frames/           Not tracked in Git
 ├── pre_labels/               Not tracked in Git
 ├── DataSet/                  Initial dataset; not tracked in Git
-└── DataSet_new/              Dataset v2 and training runs; not tracked in Git
+├── DataSet_new/              Previous incremental dataset; not tracked in Git
+└── DataSet_v2/               Final expanded dataset; not tracked in Git
 ```
 
 ## Notes
 
-- Use `best_v2.pt` for deployment; `last.pt` is not the selected checkpoint.
+- Use `best_v3.pt` for final deployment; `last.pt` is not the selected checkpoint.
 - Do not run the YOLOv8 checkpoint with the YOLOv5 `detect.py` script.
 - If the ROS 2 node appears idle, check that `/camera/image_raw` has an active publisher.
 - The dataset, raw videos, generated previews, and training runs are intentionally excluded from Git.

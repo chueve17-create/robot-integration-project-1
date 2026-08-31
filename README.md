@@ -12,7 +12,7 @@ Course project repository covering a series of robotics integration experiments,
 ## Experiments
 
 ### E4 — Custom Object Detection
-Two-class (comb, mouse) object detector built from a self-recorded video dataset, trained with YOLOv8n. Status: **training and test evaluation complete** (test mAP50 0.992); Jetson deployment + ROS2 integration is the next phase.
+Two-class (comb, mouse) object detector built from a self-recorded video dataset and trained with YOLOv8n. Status: **training, test evaluation, Jetson deployment, and ROS 2 integration complete**. The final model achieved test mAP50 0.980 and mAP50-95 0.856.
 
 See [`E4_object_detection/README.md`](./E4_object_detection/README.md) for the full data pipeline, annotation workflow, training results, and known limitations.
 
