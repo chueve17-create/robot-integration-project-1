@@ -1,0 +1,51 @@
+pick_place_node:
+  ros__parameters:
+    arm_controller_topic: "/arm_controller/joint_trajectory"
+    gripper_controller_topic: "/gripper_position_controller/commands"
+
+    arm_motion_duration: 6.0
+    transfer_duration: 8.0
+    gripper_wait_time: 2.0
+
+    gripper_open: 0.15
+    gripper_closed: -0.35
+
+    pick_joints:
+      - 0.5017
+      - 0.660
+      - -0.330
+      - 0.0
+      - 1.241
+      - 0.50
+
+    above_pick_joints:
+      - 0.5017
+      - 0.660
+      - -0.530
+      - 0.0
+      - 1.441
+      - 0.50
+
+    above_place_joints:
+      - -0.5017
+      - 0.660
+      - -0.530
+      - 0.0
+      - 1.441
+      - 0.50
+
+    place_joints:
+      - -0.5017
+      - 0.660
+      - -0.380
+      - 0.0
+      - 1.291
+      - 0.50
+
+    safe_joints:
+      - 0.502656
+      - -0.492589
+      - 0.130444
+      - 0.0
+      - 1.042811
+      - 0.001002

@@ -173,11 +173,11 @@
       </geometry>
       <origin xyz="0.039 -0.0133 -0.012 " rpy=" 0 0 0" />
     </visual>
-    <collision>
+    <collision name="left_finger_box">
+      <origin xyz="0.0369 -0.0104 -0.007" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find mycobot_description)/urdf/adaptive_gripper/gripper_left1.dae" />
+        <box size="0.050 0.015 0.014"/>
       </geometry>
-      <origin xyz="0.039 -0.0133 -0.012 " rpy=" 0 0 0" />
     </collision>
   </link>
   <link name="gripper_left2">
@@ -230,11 +230,11 @@
       </geometry>
       <origin xyz="-0.039 -0.0133 -0.012 " rpy=" 0 0 0" />
     </visual>
-    <collision>
+    <collision name="right_finger_box">
+      <origin xyz="-0.0369 -0.0104 -0.007" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="file://$(find mycobot_description)/urdf/adaptive_gripper/gripper_right1.dae" />
+        <box size="0.050 0.015 0.014"/>
       </geometry>
-      <origin xyz="-0.039 -0.0133 -0.012 " rpy=" 0 0 0" />
     </collision>
   </link>
   <link name="gripper_right2">
@@ -370,6 +370,28 @@
     <mimic joint="gripper_controller" multiplier="1.0" offset="0" />
   </joint>
   <!-- Gazebo ros2_control hardware interfaces -->
+  <!-- Preserved attachment frame for the pick object -->
+  <link name="grasp_attach_link">
+    <inertial>
+      <mass value="0.001"/>
+      <inertia
+        ixx="0.000001" ixy="0.0" ixz="0.0"
+        iyy="0.000001" iyz="0.0" izz="0.000001"/>
+    </inertial>
+  </link>
+
+  <joint name="link6_to_grasp_attach_link" type="fixed">
+    <parent link="link6"/>
+    <child link="grasp_attach_link"/>
+    <origin
+      xyz="-0.000627 0.004725 0.121851"
+      rpy="-3.1415 0.00014 -1.5691"/>
+  </joint>
+
+  <gazebo reference="link6_to_grasp_attach_link">
+    <preserveFixedJoint>true</preserveFixedJoint>
+  </gazebo>
+
   <!-- Virtual frame at the centre between the gripper fingers -->
   <link name="grasp_point"/>
 
