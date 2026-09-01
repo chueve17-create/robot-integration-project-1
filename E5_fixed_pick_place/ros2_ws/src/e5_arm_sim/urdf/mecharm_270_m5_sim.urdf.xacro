@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<robot xmlns:ns0="http://www.ros.org/wiki/xacro" name="firefighter">
-  <ns0:property name="width" value=".2" />
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="firefighter">
+  <xacro:property name="width" value=".2" />
   <!-- Fix the robot base to the simulation world -->
   <link name="world"/>
 
@@ -370,6 +370,35 @@
     <mimic joint="gripper_controller" multiplier="1.0" offset="0" />
   </joint>
   <!-- Gazebo ros2_control hardware interfaces -->
+  <!-- Virtual frame at the centre between the gripper fingers -->
+  <link name="grasp_point"/>
+
+  <joint name="gripper_base_to_grasp_point" type="fixed">
+    <parent link="gripper_base"/>
+    <child link="grasp_point"/>
+    <origin xyz="0 0.060 0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- e5_high_friction - improve simulated grasping -->
+  <gazebo reference="gripper_left1">
+    <mu1>10.0</mu1>
+    <mu2>10.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+  </gazebo>
+
+  <gazebo reference="gripper_right1">
+    <mu1>10.0</mu1>
+    <mu2>10.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+  </gazebo>
+
   <ros2_control name="GazeboSystem" type="system">
     <hardware>
       <plugin>gazebo_ros2_control/GazeboSystem</plugin>
