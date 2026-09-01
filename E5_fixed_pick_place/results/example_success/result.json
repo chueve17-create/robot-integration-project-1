@@ -1,0 +1,155 @@
+{
+  "run_id": "20260901_224218",
+  "started_at": "2026-09-01T22:42:18",
+  "finished_at": "2026-09-01T22:43:08",
+  "duration_s": 50.034,
+  "success": true,
+  "failed_stage": null,
+  "error": null,
+  "attachment_joint_name": "pick_object_grasp_joint_1788273738874654178",
+  "files": {
+    "trajectory_csv": "/home/eve/e5_ws/logs/pick_place/20260901_224218/trajectory.csv",
+    "text_log": "/home/eve/e5_ws/logs/pick_place/20260901_224218/pick_place.log",
+    "result_json": "/home/eve/e5_ws/logs/pick_place/20260901_224218/result.json"
+  },
+  "parameters": {
+    "arm_controller_topic": "/arm_controller/joint_trajectory",
+    "gripper_controller_topic": "/gripper_position_controller/commands",
+    "arm_motion_duration": 6.0,
+    "transfer_duration": 8.0,
+    "gripper_wait_time": 2.0,
+    "gripper_open": 0.15,
+    "gripper_closed": -0.35,
+    "pick_joints": [
+      0.5017,
+      0.66,
+      -0.33,
+      0.0,
+      1.241,
+      0.5
+    ],
+    "above_pick_joints": [
+      0.5017,
+      0.66,
+      -0.53,
+      0.0,
+      1.441,
+      0.5
+    ],
+    "above_place_joints": [
+      -0.5017,
+      0.66,
+      -0.53,
+      0.0,
+      1.441,
+      0.5
+    ],
+    "place_joints": [
+      -0.5017,
+      0.66,
+      -0.38,
+      0.0,
+      1.291,
+      0.5
+    ],
+    "safe_joints": [
+      0.502656,
+      -0.492589,
+      0.130444,
+      0.0,
+      1.042811,
+      0.001002
+    ],
+    "joint_sample_period": 0.1
+  },
+  "stages": [
+    {
+      "name": "open_gripper",
+      "started_at": "2026-09-01T22:42:19.886",
+      "finished_at": "2026-09-01T22:42:21.887",
+      "duration_s": 2.002,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "move_to_pick",
+      "started_at": "2026-09-01T22:42:21.888",
+      "finished_at": "2026-09-01T22:42:28.389",
+      "duration_s": 6.502,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "close_gripper",
+      "started_at": "2026-09-01T22:42:28.390",
+      "finished_at": "2026-09-01T22:42:30.391",
+      "duration_s": 2.001,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "attach_object",
+      "started_at": "2026-09-01T22:42:30.391",
+      "finished_at": "2026-09-01T22:42:30.394",
+      "duration_s": 0.003,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "lift_object",
+      "started_at": "2026-09-01T22:42:30.394",
+      "finished_at": "2026-09-01T22:42:36.896",
+      "duration_s": 6.502,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "transfer_object",
+      "started_at": "2026-09-01T22:42:36.896",
+      "finished_at": "2026-09-01T22:42:45.398",
+      "duration_s": 8.502,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "lower_to_place",
+      "started_at": "2026-09-01T22:42:45.398",
+      "finished_at": "2026-09-01T22:42:51.899",
+      "duration_s": 6.502,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "detach_object",
+      "started_at": "2026-09-01T22:42:51.900",
+      "finished_at": "2026-09-01T22:42:51.902",
+      "duration_s": 0.002,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "release_object",
+      "started_at": "2026-09-01T22:42:51.902",
+      "finished_at": "2026-09-01T22:42:53.903",
+      "duration_s": 2.001,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "retreat_from_place",
+      "started_at": "2026-09-01T22:42:53.904",
+      "finished_at": "2026-09-01T22:43:00.405",
+      "duration_s": 6.502,
+      "success": true,
+      "error": null
+    },
+    {
+      "name": "return_to_safe",
+      "started_at": "2026-09-01T22:43:00.406",
+      "finished_at": "2026-09-01T22:43:08.908",
+      "duration_s": 8.502,
+      "success": true,
+      "error": null
+    }
+  ]
+}
