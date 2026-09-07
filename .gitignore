@@ -243,3 +243,7 @@ E4_object_detection/training_results/
 E4_object_detection/sampled_v3_frames/
 E4_object_detection/pre_labels_v3/
 E4_object_detection/pre_labels_preview_v3/
+# ROS 2 workspace artifacts
+**/ros2_ws/build/
+**/ros2_ws/install/
+**/ros2_ws/log/

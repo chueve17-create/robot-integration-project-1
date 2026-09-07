@@ -1,0 +1,45 @@
+task_manager:
+  ros__parameters:
+    detections_topic: /e3/detections
+    action_name: /e3/pick_and_sort
+
+    detection_wait_timeout: 5.0
+    action_wait_timeout: 15.0
+    maximum_assignment_distance: 45.0
+    minimum_confidence: 0.70
+    stable_detection_frames: 3
+
+    grid_ids:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+
+    grid_1.pixel_center: [203.0, 308.0]
+    grid_1.model_name: pick_object_1
+
+    grid_2.pixel_center: [203.0, 230.0]
+    grid_2.model_name: pick_object_2
+
+    grid_3.pixel_center: [320.0, 308.0]
+    grid_3.model_name: pick_object_3
+
+    grid_4.pixel_center: [320.0, 230.0]
+    grid_4.model_name: pick_object_4
+
+    grid_5.pixel_center: [439.0, 308.0]
+    grid_5.model_name: pick_object_5
+
+    grid_6.pixel_center: [437.0, 230.0]
+    grid_6.model_name: pick_object_6
+
+    supported_classes:
+      - comb
+      - mouse
+
+    comb.destination_model: red_bin
+    mouse.destination_model: blue_bin
+
+    log_root: ~/e3_ws/logs/sorting
