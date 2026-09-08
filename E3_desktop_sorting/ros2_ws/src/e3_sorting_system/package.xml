@@ -17,6 +17,7 @@
   <depend>gazebo_msgs</depend>
   <depend>gazebo_model_attachment_plugin_msgs</depend>
   <depend>ament_index_python</depend>
+  <depend>e3_sorting_interfaces</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
